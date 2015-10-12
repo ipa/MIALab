@@ -1,3 +1,7 @@
 # Ignore large data
 Data.zip
 data/*
+!data/README.md
+
+# Ignore MATLAB backup files
+*.m~
