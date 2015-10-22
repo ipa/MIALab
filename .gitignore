@@ -5,3 +5,6 @@ data/*.raw
 
 # Ignore MATLAB backup files
 *.m~
+
+# Ignore Models
+models/*.mat
