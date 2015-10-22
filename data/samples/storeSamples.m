@@ -12,6 +12,8 @@ for i = 1:20
 
     path2Image=strcat(myImage_path,dirlist_InputImages(i).name);
     
+% blablabla
+
     myImage = mha_read_volume(path2Image);
     myImage = mat2gray(myImage(:,:,round(end/2)));
     imwrite(myImage, ['image' num2str(i) '.png']);
