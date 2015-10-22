@@ -10,7 +10,7 @@
 - [x] Entropy
 - [ ] Skewness
 - [ ] Position (X, Y, Z)
-- [1] Relative/Normalized Position
+- [x] Relative/Normalized Position
 - [x] Average (gaussian)
 - [x] LoG
 
