@@ -11,8 +11,8 @@
 - [ ] Skewness
 - [ ] Position (X, Y, Z)
 - [1] Relative/Normalized Position
-- [3] Average (gaussian)
-- [2] DoG
+- [x] Average (gaussian)
+- [x] LoG
 
 == Testing == 
 - [ ] Script to test different set of features or parameters
