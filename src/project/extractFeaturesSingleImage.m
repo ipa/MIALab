@@ -79,6 +79,12 @@ for j = 1:size(samplesForeground, 1)
         idx = idx + 3;
     end
     
+    if features.RelPos
+        Xf(j,idx:idx+2) = [samplesForeground(j,1)/size(myImage,1), samplesForeground(j,2)/size(myImage,2), samplesForeground(j,3)/size(myImage,3)];
+        Xb(j,idx:idx+2) = [samplesBackground(j,1)/size(myImage,1), samplesBackground(j,2)/size(myImage,2), samplesBackground(j,3)/size(myImage,3)];
+        idx = idx + 3;
+    end
+    
     if features.Gauss
         Xf(j,idx) = imgGauss(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
         Xb(j,idx) = imgGauss(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
