@@ -1,0 +1,26 @@
+== Preprocessing ==
+- [x] Wiener filter
+- [-] Median
+- [-] Histogram Stretching/Normalization (all images should have similar histograms)
+
+
+== Features == 
+- [x] Standard deviation
+- [x] Average
+- [x] Entropy
+- [ ] Skewness
+- [ ] Position (X, Y, Z)
+- [1] Relative/Normalized Position
+- [3] Average (gaussian)
+- [2] DoG
+
+== Testing == 
+- [ ] Script to test different set of features or parameters
+
+== Plot ==
+- [ ] Show predicted value on image
+
+- [ ] 
+
+== Articles ==
+Histogram Normalization: http://www.mathworks.com/matlabcentral/answers/35227-how-to-normalize-two-images-which-have-different-lighting-conditions
