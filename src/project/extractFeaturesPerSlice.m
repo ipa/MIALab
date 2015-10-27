@@ -72,7 +72,7 @@ for i = 0:size(myImage, 2)-1
    X(i*size(myImage, 1)+1:(i+1)*size(myImage, 1), 4) = ...
        (1:size(myImage,1)) / size(myImage,1);
 end
-X(:,5) = repelem((1:size(myImage,2)) / size(myImage,2), size(myImage, 1));
+X(:,5) = my_repelem(((1:size(myImage,2)) / size(myImage,2))', size(myImage, 1));
 X(:,6) = slice/totalSlices;
 X(:,7) = imgGauss(:);
 X(:,8) = imgLoG(:);

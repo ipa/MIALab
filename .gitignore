@@ -8,3 +8,6 @@ data/*.raw
 
 # Ignore Models
 models/*.mat
+
+# Ignore general .mat files
+*.mat
