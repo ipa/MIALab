@@ -7,7 +7,8 @@ data/*.raw
 *.m~
 
 # Ignore Models
-models/*.mat
+model/*.mat
+model/*.tar.gz
 
 # Ignore general .mat files
 *.mat
