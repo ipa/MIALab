@@ -22,7 +22,6 @@
 
 == Plot ==
 - [ ] Show predicted value on image
-
 - [ ] 
 
 == Articles ==
