@@ -2,17 +2,20 @@
 - [x] Wiener filter
 - [-] Median
 - [-] Histogram Stretching/Normalization (all images should have similar histograms)
+- [x] z-score normalization
+- [-] histogram fitting normalization
 
 
 == Features == 
 - [x] Standard deviation
 - [x] Average
 - [x] Entropy
-- [ ] Skewness
-- [ ] Position (X, Y, Z)
+- [x] Skewness
+- [x] Position (X, Y, Z)
 - [x] Relative/Normalized Position
 - [x] Average (gaussian)
 - [x] LoG
+- [-] Histogram bins (use matlab function ‘prctile’)
 
 == Testing == 
 - [ ] Script to test different set of features or parameters
