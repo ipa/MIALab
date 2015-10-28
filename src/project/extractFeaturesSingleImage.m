@@ -27,7 +27,8 @@ samplesBackground = datasample([Ib,Jb,Kb],nsamples);
 
 %init array to hold sample values
 nFeatures = sum([features.Avg, features.Gauss, features.LoG, features.Ent ...
-    features.Pos*3, features.RelPos*3, features.Std, features.Ske]);
+    features.Pos*3, features.RelPos*3, features.Std, features.Ske, features.Sobel*2, ...
+    features.Prewitt*2, features.Laplacian]);
 
 Xf = zeros(size(samplesForeground,1), nFeatures);
 Xb = zeros(size(Xf));
@@ -41,10 +42,22 @@ if (features.Ent); imgEnt = zeros(size(myImage)); end
 if (features.Gauss); imgGauss = zeros(size(myImage)); end
 if (features.LoG); imgLoG = zeros(size(myImage)); end
 if (features.Ske); imgSke = zeros(size(myImage)); end
+if (features.Sobel); 
+    imSobel = zeros(size(myImage)); 
+    imSobelv = zeros(size(myImage)); 
+end
+if (features.Prewitt); 
+    imPrewitt = zeros(size(myImage)); 
+    imPrewittv = zeros(size(myImage)); 
+end
+if (features.Laplacian); imLaplacian = zeros(size(myImage)); end
 
 h = fspecial('average');
 g = fspecial('gaussian');
 l = fspecial('log');
+s = fspecial('sobel');
+p = fspecial('prewitt');
+lp = fspecial('laplacian');
 for k=1:size(myImage,3)
     if (features.Avg); imgAv(:,:,k)= imfilter(myImage(:,:,k),h); end
     if (features.Std); imgStd(:,:,k) = stdfilt(myImage(:,:,k)); end
@@ -52,6 +65,15 @@ for k=1:size(myImage,3)
     if (features.Gauss); imgGauss(:,:,k)=imfilter(myImage(:,:,k),g); end
     if (features.LoG); imgLoG(:,:,k)=imfilter(myImage(:,:,k),l); end
     if (features.Ske); imgSke(:,:,k) = colfilt(myImage(:,:,k),[3 3], 'sliding', @skewness); end
+    if (features.Sobel); 
+        imSobel(:,:,k)=imfilter(myImage(:,:,k),s); 
+        imSobelv(:,:,k)=imfilter(myImage(:,:,k),s'); 
+    end
+    if (features.Prewitt); 
+        imPrewitt(:,:,k)=imfilter(myImage(:,:,k),p); 
+        imPrewittv(:,:,k)=imfilter(myImage(:,:,k),p'); 
+    end
+    if (features.Laplacian); imLaplacian(:,:,k)=imfilter(myImage(:,:,k),lp); end
 end
 
 disp('----building feature vector for samples...');
@@ -102,6 +124,30 @@ for j = 1:size(samplesForeground, 1)
     if features.Ske
         Xf(j,idx) = imgSke(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
         Xb(j,idx) = imgSke(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
+        idx = idx + 1;
+    end
+
+    if features.Sobel
+        Xf(j,idx) = imSobel(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
+        Xb(j,idx) = imSobel(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
+        idx = idx + 1;
+        Xf(j,idx) = imSobelv(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
+        Xb(j,idx) = imSobelv(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
+        idx = idx + 1;
+    end
+    
+    if features.Prewitt
+        Xf(j,idx) = imPrewitt(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
+        Xb(j,idx) = imPrewitt(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
+        idx = idx + 1;
+        Xf(j,idx) = imPrewittv(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
+        Xb(j,idx) = imPrewittv(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
+        idx = idx + 1;
+    end
+    
+    if features.Laplacian
+        Xf(j,idx) = imLaplacian(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3));
+        Xb(j,idx) = imLaplacian(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3));
         idx = idx + 1;
     end
     
