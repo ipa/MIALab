@@ -17,7 +17,7 @@ dirlist_LabelImages = dir(path2LabelImages);
 %lenghty loop, adding a waitbar
 h = waitbar(0,'...Initializing parallel computing, please wait...');
 for i = 1:nimages 
-
+    
     %strings pointing to each image
     path2Image=strcat(path2Images,dirlist_InputImages(i).name);
     path2LabelImage=strcat(path2Images,dirlist_LabelImages(i).name);
@@ -36,7 +36,7 @@ for i = 1:nimages
 end
 disp('----fetching output');
 [X,Y]=fetchOutputs(F); 
-
+close(h);
 %delete(gcp);
 disp('----done with feature extraction');
 

@@ -2,7 +2,7 @@ function [X,Y]=extractFeaturesSingleImage(path2Image, path2LabelImage, proportio
 %% EXTRACTFEATURESSINGLEIMAGE
 % features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
 %                  'Gauss', 0, 'LoG', 0, 'Ske', 1);
-
+global edges;
 myImage=mha_read_volume(path2Image);
 % preprocess image
 
@@ -28,7 +28,7 @@ samplesBackground = datasample([Ib,Jb,Kb],nsamples);
 %init array to hold sample values
 nFeatures = sum([features.Avg, features.Gauss, features.LoG, features.Ent ...
     features.Pos*3, features.RelPos*3, features.Std, features.Ske, features.Sobel*2, ...
-    features.Prewitt*2, features.Laplacian]);
+    features.Prewitt*2, features.Laplacian, features.Hist*5]);
 
 Xf = zeros(size(samplesForeground,1), nFeatures);
 Xb = zeros(size(Xf));
@@ -51,6 +51,7 @@ if (features.Prewitt);
     imPrewittv = zeros(size(myImage)); 
 end
 if (features.Laplacian); imLaplacian = zeros(size(myImage)); end
+if (features.Hist); imgHist = zeros(size(myImage,1),size(myImage,2),size(myImage,2),5); end
 
 h = fspecial('average');
 g = fspecial('gaussian');
@@ -58,6 +59,7 @@ l = fspecial('log');
 s = fspecial('sobel');
 p = fspecial('prewitt');
 lp = fspecial('laplacian');
+edges = prctile(myImage(:),[20,40,60,80]);
 for k=1:size(myImage,3)
     if (features.Avg); imgAv(:,:,k)= imfilter(myImage(:,:,k),h); end
     if (features.Std); imgStd(:,:,k) = stdfilt(myImage(:,:,k)); end
@@ -74,6 +76,13 @@ for k=1:size(myImage,3)
         imPrewittv(:,:,k)=imfilter(myImage(:,:,k),p'); 
     end
     if (features.Laplacian); imLaplacian(:,:,k)=imfilter(myImage(:,:,k),lp); end
+    if (features.Hist);
+        imgHist(:,:,k,1)=colfilt(myImage(:,:,k),[5 5], 'sliding', @h1);
+        imgHist(:,:,k,2)=colfilt(myImage(:,:,k),[5 5], 'sliding', @h2);
+        imgHist(:,:,k,3)=colfilt(myImage(:,:,k),[5 5], 'sliding', @h3);
+        imgHist(:,:,k,4)=colfilt(myImage(:,:,k),[5 5], 'sliding', @h4);
+        imgHist(:,:,k,5)=colfilt(myImage(:,:,k),[5 5], 'sliding', @h5);
+    end
 end
 
 disp('----building feature vector for samples...');
@@ -151,6 +160,24 @@ for j = 1:size(samplesForeground, 1)
         idx = idx + 1;
     end
     
+    if features.Hist
+        Xf(j,idx) = imgHist(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3),1);
+        Xb(j,idx) = imgHist(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3),1);
+        idx = idx + 1;
+        Xf(j,idx) = imgHist(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3),2);
+        Xb(j,idx) = imgHist(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3),2);
+        idx = idx + 1;
+        Xf(j,idx) = imgHist(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3),3);
+        Xb(j,idx) = imgHist(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3),3);
+        idx = idx + 1;
+        Xf(j,idx) = imgHist(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3),4);
+        Xb(j,idx) = imgHist(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3),4);
+        idx = idx + 1;
+        Xf(j,idx) = imgHist(samplesForeground(j,1),samplesForeground(j,2),samplesForeground(j,3),5);
+        Xb(j,idx) = imgHist(samplesBackground(j,1),samplesBackground(j,2),samplesBackground(j,3),5);
+        idx = idx + 1;
+    end
+    
     Yf(j) = 1;
     Yb(j) = 0;
 end
@@ -158,3 +185,25 @@ end
 
 X = [Xf; Xb];
 Y = [Yf; Yb];
+end
+
+function h = h1(v)
+global edges;
+h = sum(v<edges(1));
+end
+function h = h2(v)
+global edges;
+h = sum((edges(1)<=v)<edges(2));
+end
+function h = h3(v)
+global edges;
+h = sum((edges(2)<=v)<edges(3));
+end
+function h = h4(v)
+global edges;
+h = sum((edges(3)<=v)<edges(4));
+end
+function h = h5(v)
+global edges;
+h = sum(edges(4)<=v);
+end

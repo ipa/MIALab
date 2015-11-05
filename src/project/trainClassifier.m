@@ -10,12 +10,13 @@ voxelSize=[1.2,1.2,1.2];
 origin=[-37.888,-21.483,148.563];
 
 proportionSamples=0.001;
-numTrees=12;
+numTrees=30;
 nimages=7;
-minLeaf = 15;
+minLeaf = 1;
 
 features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
-                  'Gauss', 1, 'LoG', 1, 'Ske', 1, 'Sobel', 1, 'Prewitt', 1, 'Laplacian', 1);
+                  'Gauss', 1, 'LoG', 1, 'Ske', 0, 'Sobel', 1, ...
+                  'Prewitt', 1, 'Laplacian', 1, 'Hist', 0);
               % additional features histogram bins with prctile function from matlab
 
 %% Read images, preprocess and extract features
