@@ -4,14 +4,15 @@
 %% Prepare
 clear; close all; clc;
 addpath(genpath('../libs'));
+%% Load Data
 myImage_path='../../data/';
 
 voxelSize=[1.2,1.2,1.2];
 origin=[-37.888,-21.483,148.563];
 
-proportionSamples=0.001;
-numTrees=30;
-nimages=7;
+proportionSamples=0.01;
+numTrees=15;
+nimages=7:9;
 minLeaf = 1;
 
 features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
@@ -23,7 +24,7 @@ features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
 [X, Y]=extractFeaturesParallel(myImage_path, nimages, proportionSamples, features);
 
 %% Train a decision tree model
-treeModel = TreeBagger(numTrees,X,Y,'OOBPred','On','oobvarimp','on','MinLeaf',minLeaf);
+treeModel = TreeBagger(numTrees,X,Y,'MinLeaf',minLeaf);
 disp('---Model built');
 
 %save model to file

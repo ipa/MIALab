@@ -1,0 +1,16 @@
+function plotSample(sample,FV,color)
+
+dimSample=size(sample,1);
+FV.vertices=reshape(sample,dimSample/3,3);
+
+patch(FV,'FaceColor',       color, ...
+         'EdgeColor',       [0.5 0.5 0.5],        ...
+         'FaceLighting',    'gouraud',     ...
+         'FaceAlpha',       1.0,...
+         'EdgeAlpha',       0.5,...
+         'AmbientStrength', 0.15);
+% Add a camera light, and tone down the specular highlighting
+camlight('headlight');
+material('dull');
+
+

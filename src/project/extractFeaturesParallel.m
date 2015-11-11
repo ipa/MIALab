@@ -4,7 +4,7 @@
 %featureArray is an array with rows as observations and colums as feature
 %variables
 
-function [X,Y,procImages]=extractFeaturesParallel(path2Images, nimages, proportionSamples, features)
+function [X,Y,procImages]=extractFeaturesParallel(path2Images, images, proportionSamples, features)
 
 %% loop through each image and extract features
 path2InputImages=strcat(path2Images,'image*.mhd');
@@ -13,10 +13,12 @@ path2LabelImages=strcat(path2Images,'labels*.mhd');
 dirlist_InputImages = dir(path2InputImages);
 dirlist_LabelImages = dir(path2LabelImages);
 
+nimages = length(images);
 %read input and label images
 %lenghty loop, adding a waitbar
 h = waitbar(0,'...Initializing parallel computing, please wait...');
-for i = 1:nimages 
+idx = 1;
+for i = images 
     
     %strings pointing to each image
     path2Image=strcat(path2Images,dirlist_InputImages(i).name);
@@ -26,13 +28,14 @@ for i = 1:nimages
     %features per image. Future element (matlab lingo for worker in
     %parallel computing), stores each result. Check parfeval doc for details on
     %arguments. 
-    F(i) = parfeval(@extractFeaturesSingleImage,2,path2Image,path2LabelImage,proportionSamples, features);
-    myImage=mha_read_volume(path2Image);
-    %handler for processed images
-    subplot(floor(sqrt(nimages)),ceil(nimages/(floor(sqrt(nimages)))),i);viewImage(myImage,[1,1,1]); % to fix hard-coded voxelSize! 
-
-    waitbar(i/nimages,h,strcat('Processing image',num2str(i)));
+    F(idx) = parfeval(@extractFeaturesSingleImage,2,path2Image,path2LabelImage,proportionSamples, features);
     
+    %myImage=mha_read_volume(path2Image);
+    %handler for processed images
+    %subplot(floor(sqrt(nimages)),ceil(nimages/(floor(sqrt(nimages)))),i);viewImage(myImage,[1,1,1]); % to fix hard-coded voxelSize! 
+
+    waitbar(idx/nimages,h,strcat('Processing image',num2str(i)));
+    idx = idx + 1;
 end
 disp('----fetching output');
 [X,Y]=fetchOutputs(F); 

@@ -18,7 +18,7 @@ nSamples = If * Jf;
 %init array to hold sample values
 nFeatures = sum([features.Avg, features.Gauss, features.LoG, features.Ent ...
     features.Pos*3, features.RelPos*3, features.Std, features.Sobel*2, ...
-    features.Prewitt*2, features.Laplacian]);
+    features.Prewitt*2, features.Laplacian, features.Ske]);
 
 X = zeros(nSamples, nFeatures);
 
@@ -28,6 +28,7 @@ if (features.Std); imgStd = zeros(size(myImage)); end
 if (features.Ent); imgEnt = zeros(size(myImage)); end
 if (features.Gauss); imgGauss = zeros(size(myImage)); end
 if (features.LoG); imgLoG = zeros(size(myImage)); end
+if (features.Ske); imgSke = zeros(size(myImage)); end
 if (features.Sobel);
     imSobel = zeros(size(myImage));
     imSobelv = zeros(size(myImage));
@@ -50,6 +51,7 @@ for k=1:Kf
     if (features.Ent); imgEnt(:,:,k)=entropyfilt(myImage(:,:,k)); end
     if (features.Gauss); imgGauss(:,:,k)=imfilter(myImage(:,:,k),g); end
     if (features.LoG); imgLoG(:,:,k)=imfilter(myImage(:,:,k),l); end
+    if (features.Ske); imgSke(:,:,k) = colfilt(myImage(:,:,k),[3 3], 'sliding', @skewness); end
     if (features.Sobel);
         imSobel(:,:,k)=imfilter(myImage(:,:,k),s);
         imSobelv(:,:,k)=imfilter(myImage(:,:,k),s');
@@ -62,25 +64,28 @@ for k=1:Kf
 end
 
 disp('----building feature vector for samples...');
-sample = 1;
+idx = 1;
 %k = median(1:Kf);
-X(:,1) = imgAv(:);
-X(:,2) = imgStd(:);
-X(:,3) = imgEnt(:);
+X(:,idx) = imgAv(:); idx = idx + 1;
+X(:,idx) = imgStd(:); idx = idx + 1;
+X(:,idx) = imgEnt(:); idx = idx + 1;
 %X(:,4) = repelem((1:size(myImage,1)) / size(myImage,1), size(myImage, 2));
 for i = 0:size(myImage, 2)-1
-   X(i*size(myImage, 1)+1:(i+1)*size(myImage, 1), 4) = ...
+   X(i*size(myImage, 1)+1:(i+1)*size(myImage, 1), idx) = ...
        (1:size(myImage,1)) / size(myImage,1);
 end
-X(:,5) = my_repelem(((1:size(myImage,2)) / size(myImage,2))', size(myImage, 1));
-X(:,6) = slice/totalSlices;
-X(:,7) = imgGauss(:);
-X(:,8) = imgLoG(:);
-X(:,9) = imSobel(:);
-X(:,10) = imSobelv(:);
-X(:,11) = imPrewitt(:);
-X(:,12) = imPrewittv(:);
-X(:,13) = imLaplacian(:);
+idx = idx + 1;
+X(:,idx) = my_repelem(((1:size(myImage,2)) / size(myImage,2))', size(myImage, 1)); ...
+     idx = idx + 1;
+X(:,idx) = slice/totalSlices; idx = idx + 1;
+X(:,idx) = imgGauss(:); idx = idx + 1;
+X(:,idx) = imgLoG(:); idx = idx + 1;
+if features.Ske; X(:,idx) = imgSke(:); idx = idx + 1; end
+X(:,idx) = imSobel(:); idx = idx + 1;
+X(:,idx) = imSobelv(:); idx = idx + 1;
+X(:,idx) = imPrewitt(:); idx = idx + 1;
+X(:,idx) = imPrewittv(:); idx = idx + 1;
+X(:,idx) = imLaplacian(:); idx = idx + 1;
 % for j = 1:Jf %X(:,1) = imgAv(:);
 %     for i = 1:If
 %         
