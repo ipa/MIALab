@@ -172,21 +172,43 @@ end
 
 
 %% Lab 5 part 3
+FV = compactVerticesFaces(FV);
 normalsTri = zeros(size(FV.faces));
 for i = 1:size(FV.faces,1)
     v1 = FV.vertices(FV.faces(i,2),:) - FV.vertices(FV.faces(i,1),:);
     v2 = FV.vertices(FV.faces(i,3),:) - FV.vertices(FV.faces(i,1),:);
     normalsTri(i,:) = cross(v1,v2);
+    normalsTri(i,:) = normalsTri(i,:)/norm(normalsTri(i,:));
 end
-
-
-[sVer, idx] = sortrows(FV.vertices);
-
 normalsVer = zeros(size(FV.vertices));
 for i = 1:size(FV.vertices,1)
     [idx,~] = find(FV.faces==i);
+    normalsVer(i,:) = mean(normalsTri(idx,:),1);
 end
 
+
+kd = KDTreeSearcher(FV.vertices);
+stepSize = 0.1;
+xmax = max(FV.vertices(:,1));
+xmin = min(FV.vertices(:,1));
+ymax = max(FV.vertices(:,2));
+ymin = min(FV.vertices(:,2));
+zmax = max(FV.vertices(:,3));
+zmin = min(FV.vertices(:,3));
+idx2point = @(idx) [xmin+stepSize*idx(1), ymin+stepSize*idx(2), zmin+stepSize*idx(3)];
+
+V = zeros(ceil((xmax-xmin)/stepSize), ceil((ymax-ymin)/stepSize), ceil((zmax-zmin)/stepSize));
+for x = 1:size(V,1)
+    for y = 1:size(V,2)
+        for z = 1:size(V,3)
+            p = idx2point([x,y,z]);
+            closestVerIdx = knnsearch(FV.vertices,p);
+            v = FV.vertices(closestVerIdx,:) - p;
+            n = normalsVer(closestVerIdx,:);
+            V(x,y,z) = sign(v*n')>=0;
+        end
+    end
+end
 
 %% Tasks:
 
@@ -205,15 +227,3 @@ end
 % of the contribution metric to find outliers, as seen in the main lecture.
 % 3. Make a routine to transform your shape into a binary image (method to
 % be explained in class).
-
-
-%% Remove double vertices
-vertices = FV.vertices;
-faces = FV.faces;
-
-[vertices, idx] = sortrows(vertices);
-M = [true; any(diff(vertices), 2)];
-vertices = vertices(M,:);
-%normals = normals(M,:);
-idx(idx) = cumsum(M);
-faces = idx(faces);
