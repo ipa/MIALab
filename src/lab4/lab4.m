@@ -122,9 +122,9 @@ boxplot(s_error');title('Generalization');
 %% Lab 5 part 1
 Cr = zeros(size(inputMean,1), 8);
 for m = 1
-    figure;
+    figure(1); clf;
     % ==========================================
-    for i = -1 %hint: add an interval a:b:c
+    for i = 0 %hint: add an interval a:b:c
         b=zeros(size(eVals));
         b(m)=i;
         % ==========================================
@@ -139,7 +139,7 @@ for m = 1
         hold on;
         %Visualize new shape
         outliedIdx = 1000;
-        reconstructedFemur(20000:30000,:) = reconstructedFemur(20000:30000,:) + rand(1,1)*50;
+        reconstructedFemur(20000:30000,:) = reconstructedFemur(20000:30000,:) + rand(1,1)*100;
         plotSample(reconstructedFemur,FV,'y');
         %trisurf(FV.faces, reconstructedFemur(1:f-1), reconstructedFemur(f:2*f-1), reconstructedFemur(2*f:3*f), ones(f-1, 1));
         hold off;
@@ -148,27 +148,28 @@ for m = 1
         %title(['Mode ' num2str(m)]);
         %legend('Mean', 'Moving', 'Location', 'Best');
         %pause(0.1); % this helps with the visualization
-        
-        figure
+            end
+end
+        %% foo
+        figure(10); clf;
         n = length(inputMean);
         %for j = 1:length(inputMean)
         for k = 1:8
             Phi=  eVecs(:, k) .* sqrt(eVals(k));
-            bout = (1./Phi) .* (reconstructedFemur - inputMean);
-            Cr(:,k) = (1/n) .* bout.^2 ./ eVals(k);
+            bout = ((1./Phi)' * (reconstructedFemur - inputMean)).^2;
+            Cr(:,k) = (1/n) * bout ./ eVals(k);
 %             Cr(:,k) = (((reconstructedFemur - inputMean) + ...
 %                 eVecs(:,k)*sqrt(eVals(k))).^2) ./ eVals(k);
             subplot(8,1,k);
             plot(Cr(:,k));
         end
         %end
-        
+        %%
         figure
         plot(Cr(:,2));
         
         
-    end
-end
+
 
 %% Lab 5 part 3
 normalsTri = zeros(size(FV.faces));
@@ -206,4 +207,13 @@ end
 % be explained in class).
 
 
+%% Remove double vertices
+vertices = FV.vertices;
+faces = FV.faces;
 
+[vertices, idx] = sortrows(vertices);
+M = [true; any(diff(vertices), 2)];
+vertices = vertices(M,:);
+%normals = normals(M,:);
+idx(idx) = cumsum(M);
+faces = idx(faces);
