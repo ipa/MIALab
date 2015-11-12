@@ -170,6 +170,23 @@ for m = 1
     end
 end
 
+%% Lab 5 part 3
+normalsTri = zeros(size(FV.faces));
+for i = 1:size(FV.faces,1)
+    v1 = FV.vertices(FV.faces(i,2),:) - FV.vertices(FV.faces(i,1),:);
+    v2 = FV.vertices(FV.faces(i,3),:) - FV.vertices(FV.faces(i,1),:);
+    normalsTri(i,:) = cross(v1,v2);
+end
+
+
+[sVer, idx] = sortrows(FV.vertices);
+
+normalsVer = zeros(size(FV.vertices));
+for i = 1:size(FV.vertices,1)
+    [idx,~] = find(FV.faces==i);
+end
+
+
 %% Tasks:
 
 % ******** First part *********
