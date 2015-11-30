@@ -9,12 +9,12 @@ totalSlices = size(myImage, 3); % to calculate rel posistion
 myImage = myImage(:,:,slice);
 %display(size(myImage));
 
-disp('----preprocessing image');
+% disp('----preprocessing image');
 myImage=preProcess(myImage);
 
-disp('----extracting features from image...');
+% disp('----extracting features from image...');
 [If,Jf,Kf] = size(myImage);
-nSamples = If * Jf;
+nSamples = If * Jf * length(slice);
 %init array to hold sample values
 nFeatures = sum([features.Avg, features.Gauss, features.LoG, features.Ent ...
     features.Pos*3, features.RelPos*3, features.Std, features.Sobel*2, ...
@@ -75,9 +75,12 @@ for i = 0:size(myImage, 2)-1
        (1:size(myImage,1)) / size(myImage,1);
 end
 idx = idx + 1;
-X(:,idx) = my_repelem(((1:size(myImage,2)) / size(myImage,2))', size(myImage, 1)); ...
+X(:,idx) = my_repelem(((1:size(myImage,2)) / size(myImage,2))', ...
+    size(myImage, 1)*length(slice)); ...
      idx = idx + 1;
-X(:,idx) = slice/totalSlices; idx = idx + 1;
+X(:,idx) = repelem(slice/totalSlices, size(myImage, 2)*size(myImage, 1)); ...
+    idx = idx + 1;
+%slice/totalSlices; idx = idx + 1;
 X(:,idx) = imgGauss(:); idx = idx + 1;
 X(:,idx) = imgLoG(:); idx = idx + 1;
 if features.Ske; X(:,idx) = imgSke(:); idx = idx + 1; end
