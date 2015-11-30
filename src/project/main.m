@@ -32,26 +32,22 @@ display(dice(P, myLabel));
 % figure('Name','Result of Marching Cube (MATLAB)','NumberTitle','off')
 % tic
 res = [0.3906 0.3906 1];
-Ps = smooth3(P, 'box', 5);
+Ps = smooth3(P, 'box', 3);
 figure(10); clf
 isovalue = 0;
-colorBone = [1.0000    0.7812    0.4975];
+colorBone = [0.8824    0.8314    0.7529];
 [faces, verts] = isosurface(Ps, isovalue);
 verts(:,1) = verts(:,1) * res(1);
 verts(:,2) = verts(:,2) * res(2);
 verts(:,3) = verts(:,3) * res(3);
 p = patch('Vertices', verts, 'Faces', faces, ... 
     'FaceColor', colorBone, ... 
-    'edgecolor', 'none');
+    'edgecolor', 'none', ...
+    'AmbientStrength', 0.15);
 isonormals(P, p);
-% toc
-% pm.FaceColor = colorBone;
-% pm.EdgeColor = 'none';
-%p.LineStyle = ':';
-%p.LineWidth = 0.1;
-% colormap bone
 daspect([1,1,1])
 view(3);
 axis vis3d
 camlight
 lighting flat
+material('dull');
