@@ -25,8 +25,18 @@ myLabel=mha_read_volume(path2label);
 myLabel = logical(myLabel == 1);
 
 %% Predict
-P = predictImage(treeModel, myImage, features);
+[P, Ps] = predictImage(treeModel, myImage, features);
 display(dice(P, myLabel));
+
+%% Post Process
+[P] = postprocessPrediction(Ps);
+display(dice(P, myLabel));
+
+%% Performance Curve
+figure
+[RocX, RocY, ~, AUC] = perfcurve(myLabel(:), Ps(:), true);
+plot(RocX, RocY, 'b');
+title(sprintf('ROC Curve - AUC: %0.2f', AUC*100));
 
 %% Create Volume Rendering
 % figure('Name','Result of Marching Cube (MATLAB)','NumberTitle','off')
