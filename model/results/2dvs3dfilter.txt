@@ -1,0 +1,10 @@
+2d: 0.8559, 0.8741
+3d: 0.9165, 0.9383
+
+3d filter, less performance
+
+neural network, bad performance, looks like over and underfitting, (maybe wrong features?)
+
+resolution of images
+
+origin for calculating position feature
