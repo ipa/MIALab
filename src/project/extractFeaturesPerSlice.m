@@ -66,9 +66,9 @@ end
 disp('----building feature vector for samples...');
 idx = 1;
 %k = median(1:Kf);
-X(:,idx) = imgAv(:); idx = idx + 1;
-X(:,idx) = imgStd(:); idx = idx + 1;
-X(:,idx) = imgEnt(:); idx = idx + 1;
+if (features.Avg); X(:,idx) = imgAv(:); idx = idx + 1; end
+if (features.Std); X(:,idx) = imgStd(:); idx = idx + 1; end
+if (features.Ent); X(:,idx) = imgEnt(:); idx = idx + 1; end
 %X(:,4) = repelem((1:size(myImage,1)) / size(myImage,1), size(myImage, 2));
 for i = 0:size(myImage, 2)-1
    X(i*size(myImage, 1)+1:(i+1)*size(myImage, 1), idx) = ...
@@ -78,77 +78,20 @@ idx = idx + 1;
 X(:,idx) = my_repelem(((1:size(myImage,2)) / size(myImage,2))', ...
     size(myImage, 1)*length(slice)); ...
      idx = idx + 1;
-X(:,idx) = repelem(slice/totalSlices, size(myImage, 2)*size(myImage, 1)); ...
+X(:,idx) = my_repelem(slice/totalSlices, size(myImage, 2)*size(myImage, 1)); ...
     idx = idx + 1;
 %slice/totalSlices; idx = idx + 1;
-X(:,idx) = imgGauss(:); idx = idx + 1;
-X(:,idx) = imgLoG(:); idx = idx + 1;
+if (features.Gauss); X(:,idx) = imgGauss(:); idx = idx + 1; end
+if (features.LoG); X(:,idx) = imgLoG(:); idx = idx + 1; end
 if features.Ske; X(:,idx) = imgSke(:); idx = idx + 1; end
-X(:,idx) = imSobel(:); idx = idx + 1;
-X(:,idx) = imSobelv(:); idx = idx + 1;
-X(:,idx) = imPrewitt(:); idx = idx + 1;
-X(:,idx) = imPrewittv(:); idx = idx + 1;
-X(:,idx) = imLaplacian(:); idx = idx + 1;
-% for j = 1:Jf %X(:,1) = imgAv(:);
-%     for i = 1:If
-%         
-%         idx = 1;
-%         if features.Avg
-%             X(sample,idx) = imgAv(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.Std
-%             X(sample,idx) = imgStd(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.Ent
-%             X(sample,idx) = imgEnt(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.Pos
-%             X(sample,idx) = [i, j, k];
-%             idx = idx + 3;
-%         end
-%         
-%         if features.RelPos
-%             X(sample,idx:idx+2) = [i/size(myImage,1), j/size(myImage,2), ...
-%                 slice/totalSlices];
-%             idx = idx + 3;
-%         end
-%         
-%         if features.Gauss
-%             X(sample,idx) = imgGauss(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.LoG
-%             X(sample,idx) = imgLoG(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.Sobel
-%             X(sample,idx) = imSobel(i, j, k);
-%             idx = idx + 1;
-%             X(sample,idx) = imSobelv(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.Prewitt
-%             X(sample,idx) = imPrewitt(i, j, k);
-%             idx = idx + 1;
-%             X(sample,idx) = imPrewittv(i, j, k);
-%             idx = idx + 1;
-%         end
-%         
-%         if features.Laplacian
-%             X(sample,idx) = imLaplacian(i, j, k);
-%             idx = idx + 1;
-%         end
-%         sample = sample + 1;
-%     end
-% end
+if (features.Sobel);
+    X(:,idx) = imSobel(:); idx = idx + 1;
+    X(:,idx) = imSobelv(:); idx = idx + 1;
+end
+if (features.Prewitt); 
+    X(:,idx) = imPrewitt(:); idx = idx + 1;
+    X(:,idx) = imPrewittv(:); idx = idx + 1;
+end
+if (features.Laplacian); X(:,idx) = imLaplacian(:); idx = idx + 1; end
 
 end
