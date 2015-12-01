@@ -4,19 +4,19 @@
 %% Prepare
 clear; close all; clc;
 
-load('treeModel3.mat');
+load('finalModel.mat');
 % treeModel = treeModel2;
 % clear treeModel2;
 addpath(genpath('../libs'));
 myImage_path='../../data/';
 
-voxelSize=[1.2,1.2,1.2];
+voxelSize=[0.3906 0.3906 1];
 % origin=[-37.888,-21.483,148.563];
 % proportionSamples=0.05;
 
-features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
-                  'Gauss', 1, 'LoG', 1, 'Ske', 0, 'Sobel', 1, 'Prewitt', 1,...
-                  'Laplacian', 1, 'Hist', 0);
+% features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
+%                   'Gauss', 1, 'LoG', 1, 'Ske', 0, 'Sobel', 1, 'Prewitt', 1,...
+%                   'Laplacian', 1, 'Hist', 0);
 %% Load Image
 path2image = [myImage_path, 'image-017.mhd'];
 path2label = [myImage_path, 'labels-017.mhd'];
@@ -41,15 +41,14 @@ title(sprintf('ROC Curve - AUC: %0.2f', AUC*100));
 %% Create Volume Rendering
 % figure('Name','Result of Marching Cube (MATLAB)','NumberTitle','off')
 % tic
-res = [0.3906 0.3906 1];
-Ps = smooth3(P, 'box', 3);
+P = smooth3(P, 'box', 3);
 figure(10); clf
 isovalue = 0;
 colorBone = [0.8824    0.8314    0.7529];
-[faces, verts] = isosurface(Ps, isovalue);
-verts(:,1) = verts(:,1) * res(1);
-verts(:,2) = verts(:,2) * res(2);
-verts(:,3) = verts(:,3) * res(3);
+[faces, verts] = isosurface(P, isovalue);
+verts(:,1) = verts(:,1) * voxelSize(1);
+verts(:,2) = verts(:,2) * voxelSize(2);
+verts(:,3) = verts(:,3) * voxelSize(3);
 p = patch('Vertices', verts, 'Faces', faces, ... 
     'FaceColor', colorBone, ... 
     'edgecolor', 'none', ...
