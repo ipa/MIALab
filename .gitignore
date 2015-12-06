@@ -12,3 +12,6 @@ model/*.tar.gz
 
 # Ignore general .mat files
 *.mat
+!src/project/finalModel.mat
+
+
