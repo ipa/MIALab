@@ -1,0 +1,5 @@
+Questions:
+Why does the ground truth (or P) as edge map not work?
+What is the point in adding origin? Does it change from image to image? 'This can be done later with image registration methods'?
+
+
