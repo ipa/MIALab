@@ -172,6 +172,7 @@ end
 
 
 %% Lab 5 part 3
+FV.vertices=reshape(currShape1D,dimSample/3,3);
 FV = compactVerticesFaces(FV);
 normalsTri = zeros(size(FV.faces));
 for i = 1:size(FV.faces,1)

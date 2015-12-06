@@ -8,11 +8,12 @@
 % clear all;
 %% General parameters
 addpath(genpath('../libs'));
+addpath('../lab4');
 %%
 search_range=8.0; %in mm
 search_samples=4; %number of samples per profile
 niterations=30;
-nscalefactor = 0.02;
+% nscalefactor = 0.02;
 myImage_path ='../../data/image-017.mhd';
 
 voxelSize=[0.3906,0.3906,1.0];
@@ -21,8 +22,8 @@ voxelSize=[0.3906,0.3906,1.0];
 origin=[-35.9352,-17.5770,120.7290];%sample17
 %origin=[35.9352,27.5770,120.7290];%sample17
 
-figure
-camlight('headlight');
+% figure
+% camlight('headlight');
 
 %% Read inputs, model, image
 load('SSM_KneeModel.mat');  %eigVals, eigVectors, meanShape;
@@ -68,33 +69,38 @@ end
 
 %% Read target image and compute edge map
 myImage=mha_read_volume(myImage_path);
-
+% myImage = mha_read_volume('../../data/image-017.mhd');
 myImageEdge=zeros(size(myImage));
 for j=1:size(myImage,3)
     %smearing the detected edge
     H = fspecial('gaussian',30,10);
     %edge detection
-    edgecomp=edge(myImage(:,:,j),'canny', [], 3);%,[],3
+    edgecomp=edge(1-Ps(:,:,j),'canny', [], 3);%,[],3
     myImageEdge(:,:,j) = exp(5*imfilter(double(edgecomp),H,'replicate'));
 end
 viewImage(myImageEdge, voxelSize);hold on;
+% myImageEdgeUnboosted = myImageEdge;
 
 %% Iterate between normal searching and procrustes and shape transformations
+% myImageEdge = double(myImageEdgeBoost);
 
 %currShape is our deformable (statistically) model.
 currShape=meanShape_3D;
 %flatten it for computations
 currShape1D=reshape(currShape,dimSample,1);
 plotSample(currShape1D,FV,[.3 .3 .5]);hold on;drawnow;
-
+niterations = 5;
 % niterations = ;
 %store iterations
 evolution=zeros(dimSample,niterations);
-d = zeros(niteraions, 1);
-dist = zeros(niterations, 1);
+% d = zeros(niterations, 1);
+% dist = zeros(niterations, 1);
 
 for it=1:niterations
-    
+    figure(1); clf
+%     viewImage(myImageEdge, voxelSize, 20);hold on;
+    viewImage(myImageEdge, voxelSize, 40);hold on;
+%     viewImage(myImageEdge, voxelSize, 80);hold on;
     strj=strcat('Iteration:',num2str(it));
     disp(strj);
     %find strong edges
@@ -106,7 +112,8 @@ for it=1:niterations
     
     %find affine transformation
     disp('Procrustes...')
-    [d,Ytrans,transform]=procrustes(Y,currShape,'reflection',false); %finds transform that fits currShape to observation Y.
+    [d,Ytrans,transform]=procrustes(Y,currShape, 'reflection', false); 
+    %finds transform that fits currShape to observation Y.
     
     % update shape component
     disp('Shape component...')
@@ -122,34 +129,35 @@ for it=1:niterations
     currShape1D=reshape(currShape,dimSample,1);
     plotSample(currShape1D,FV,'g');
     hold on
-    quiver3(currShape(:,1), currShape(:,2), currShape(:,3), ...
-        Y(:,1)*nscalefactor, Y(:,2)*nscalefactor, Y(:,3)*nscalefactor,...
-        'AutoScale', 'on', 'Color', 'b');
+%     quiver3(currShape(:,1), currShape(:,2), currShape(:,3), ...
+%         Y(:,1)*nscalefactor, Y(:,2)*nscalefactor, Y(:,3)*nscalefactor,...
+%         'AutoScale', 'on', 'Color', 'b');
     drawnow;
     evolution(:,it)=currShape1D;
     
-    if it > 1
-        d(it) = sum((evolution(:,it) - evolution(:,it-1)).^2);
-        dist(it) = norm(mean(evolution(:,it-1)-evolution(:,it)),2);
-        disp(sprintf('d = %f', d(it)));
-        disp(sprintf('dist = %f', dist(it)));
-    end
+%     if it > 1
+%         d(it) = sum((evolution(:,it) - evolution(:,it-1)).^2);
+%         dist(it) = norm(mean(evolution(:,it-1)-evolution(:,it)),2);
+%         disp(sprintf('d = %f', d(it)));
+%         disp(sprintf('dist = %f', dist(it)));
+%     end
 end
-d(1) = d(2);
-dist(1) = dist(2);
+% d(1) = d(2);
+% dist(1) = dist(2);
 
 disp('Iterations done.');
 
 
 %% For testing. Compare against real shape (GT)
 
-% FVSample=read_wobj('../lab4/DataSSMModel/R_Femur_17.obj');
-% shapeGT=FVSample.vertices;
-% fvSample.faces=FVSample.faces;
+FVSample=read_wobj('../lab4/DataSSMModel/R_Femur_17.obj');
+shapeGT=FVSample.vertices;
+fvSample.faces=FVSample.faces;
 
 %% draw
 %swap row and columns for mesh coordinates to match. why? because i,j,k
 %=y,x,z - Or, rows (second component) increase X component.
+figure(2); clf
 shapeGT=shapeGT+repmat(origin,size(shapeGT,1),1);
 
 temp=shapeGT(:,1);
@@ -158,15 +166,18 @@ shapeGT(:,2)=temp;
 
 %plot both meshes
 shapeGT1D=reshape(shapeGT,size(shapeGT,1)*3,1);
-figure
-plotSample(shapeGT1D,fvSample,'b');
-plotSample(currShape1D,FV,'g');view([1,0,0]);
+% figure
+% viewImage(myImageEdge, voxelSize); hold on;
+% plotSample(shapeGT1D,fvSample,'b');
+% plotSample(currShape1D,FV,'g');view([1,0,0]);
+%% Plot Error
+p2pError = zeros(niterations, 1);
 for i=1:niterations
     
-    subplot(1,3,1);
-    hplot=plotSample(evolution(:,i),FV,'g');view([1,0,0]);
-    h2=subplot(1,3,2);copyobj(hplot,h2);view([0,1,0]);
-    h3=subplot(1,3,3);copyobj(hplot,h3);view([0,0,1]);
+%     subplot(1,3,1);
+%     hplot=plotSample(evolution(:,i),FV,'g');view([1,0,0]);
+%     h2=subplot(1,3,2);copyobj(hplot,h2);view([0,1,0]);
+%     h3=subplot(1,3,3);copyobj(hplot,h3);view([0,0,1]);
     
     evolution3D=reshape(evolution(:,i),dimSample/3,3);
     p2pError(i)=norm(mean(shapeGT-evolution3D),2);
@@ -174,7 +185,10 @@ for i=1:niterations
 end
 
 % plot point-to-point average erro
-figure; plot([1:niterations],p2pError);title('Point-to-Point distance error vs number of iterations');axis tight;
+figure; 
+plot([1:niterations],p2pError);
+title('Point-to-Point distance error vs number of iterations');
+axis tight;
 
 
 
@@ -191,5 +205,12 @@ figure; plot([1:niterations],p2pError);title('Point-to-Point distance error vs n
 % 3.- change the routine to have a criterion stop that stops the iterations when
 %a given delta shape is lower than a defined threshold
 
+%% Plot
 
+figure(10); clf
+for k = 1:size(myImageEdge, 3)
+    
+    viewImage(myImageEdge, voxelSize, k); hold on;
+    drawnow();
+end
 

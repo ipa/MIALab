@@ -4,7 +4,7 @@
 %% Prepare
 clear; close all; clc;
 
-load('treeModelBootstrapped_moredata.mat');
+load('treeModel3.mat');
 % treeModel = treeModel2;
 % clear treeModel2;
 addpath(genpath('../libs'));
@@ -36,17 +36,19 @@ for k = 1:size(myImage, 3)
     [Xs] = extractFeaturesPerSlice(myImage, features, k);
     
     display('-- predicting');
-    [prediction13, score13] = compactTreeModel13.predict(Xs);
-    [prediction46, score46] = compactTreeModel46.predict(Xs);
-    [prediction79, score79] = compactTreeModel79.predict(Xs);
+    [prediction, score] = treeModel.predict(Xs);
+%     [prediction13, score13] = compactTreeModel13.predict(Xs);
+%     [prediction46, score46] = compactTreeModel46.predict(Xs);
+%     [prediction79, score79] = compactTreeModel79.predict(Xs);
     
     T = 0.5;
-    Pm13 = score13(:,2) > T;
-    Pm46 = score46(:,2) > T;
-    Pm79 = score79(:,2) > T;
-    Pm = (Pm13 + Pm46 + Pm79) >= 3;
-    score = (score13(:,2) + score46(:,2) + score79(:,2)) / 3;
-     %Pm = cell2mat(prediction) == '1';
+%     Pm13 = score13(:,2) > T;
+%     Pm46 = score46(:,2) > T;
+%     Pm79 = score79(:,2) > T;
+%     Pm = (Pm13 + Pm46 + Pm79) >= 3;
+%     score = (score13(:,2) + score46(:,2) + score79(:,2)) / 3;
+%     Pm = cell2mat(prediction) == '1';
+    Pm = score(:,2) >= T;
     P = reshape(Pm, [size(myImage,1), size(myImage, 2), 1]);
 
     Dice(k, 1) = dice(P, myLabel(:,:,k));
@@ -64,7 +66,7 @@ for k = 1:size(myImage, 3)
     title('Ground Truth');
     subplot(2,2,4);
 %     scoreTrue = score();
-    scoreTrueR = mat2gray(reshape(score, [size(myImage,1), size(myImage,2),1]));
+    scoreTrueR = mat2gray(reshape(score(:,2), [size(myImage,1), size(myImage,2), 1]));
     %scoreTrueR = scoreTrueR > 0.9; %(scoreTrueR < 0.9) = 0;
     imshow(scoreTrueR);
     title('Score');
@@ -120,6 +122,6 @@ end
 %save(sprintf('Dice_%d', num2str(nImg), 'Dice'));
 % mean(Dice);
 figure
-boxplot(Dice(1:end-15,:));
+boxplot(Dice);
 
 %exit;
