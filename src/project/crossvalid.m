@@ -47,11 +47,11 @@ for j = 1:length(ntest)
     [Ppp] = postprocessPrediction(Ps);
     dicespp(j, i) = dice(Ppp, myLabel);
     
-    save(sprintf('Ps-%03.f.mat', j), 'Ps');
+    save(sprintf('results/crossvd/Ps-%03.f.mat', j), 'Ps');
 end
 
-save(sprintf('treeModel-cv%d.mat', i), 'treeModel', 'features');
+save(sprintf('results/crossvd/treeModel-cv%d.mat', i), 'treeModel', 'features');
 
 end
 
-save('dices.mat', 'dicesp', 'dicespp');
+save('results/crossvd/dices.mat', 'dicesp', 'dicespp');
