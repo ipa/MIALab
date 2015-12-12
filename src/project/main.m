@@ -4,7 +4,7 @@
 %% Prepare
 clear; close all; clc;
 
-load('treeModel2.mat');
+load('compactTreeModel.mat');
 % treeModel = treeModel2;
 % clear treeModel2;
 addpath(genpath('../libs'));

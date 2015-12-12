@@ -19,7 +19,7 @@ p = patch('Vertices', nv, ...
     'EdgeColor', 'none');
 isonormals(Psmooth, p);
 % daspect([1,1,1])
-view(3);
+view([137,40]);
 axis vis3d
 camlight('headlight')
 % lighting flat

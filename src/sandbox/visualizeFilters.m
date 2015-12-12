@@ -27,7 +27,9 @@ lp = fspecial('laplacian');
 lp = mat2gray(lp);
 lp = imresize(lp,50/3);
 
-im = [g,h; l,lp; p,p'; s,s'];
+vSpace = ones(50, 5);
+hSpace = ones(5, 2*50+5);
+im = [g,vSpace,h; hSpace; l,vSpace,lp; hSpace; p,vSpace,p'; hSpace; s,vSpace,s'];
 
 f = figure;
 imshow(im);
