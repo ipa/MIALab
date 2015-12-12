@@ -10,7 +10,7 @@ myImage_path='../../data/';
 % voxelSize=[1.2,1.2,1.2];
 % origin=[-37.888,-21.483,148.563];
 
-proportionSamples=0.05;
+proportionSamples=0.01;
 numTrees=15;
 nimages=1:15;
 minLeaf = 1;
@@ -30,7 +30,8 @@ features = struct('Std', 1, 'Avg', 1, 'Ent', 1, 'Pos', 0, 'RelPos', 1, ...
 % Xn = pca_project(X, mu, s, principals, K );
 
 %% Train a decision tree model
-treeModel = TreeBagger(numTrees,X,Y,'MinLeaf',minLeaf);
+options = statset('UseParallel', true);
+treeModel = TreeBagger(numTrees,X,Y,'MinLeaf',minLeaf, 'Options', options);
 disp('---Model built');
 
 %save model to file

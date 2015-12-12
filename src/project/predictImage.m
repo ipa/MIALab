@@ -6,7 +6,7 @@ P = zeros(size(image));
 Ps = zeros(size(image));
 
 parfor ki = 1:size(image, 3)
-    display(['Processing slice ', num2str(ki)]);
+%     display(['Processing slice ', num2str(ki)]);
     
     [Xs] = extractFeaturesPerSlice(image, features, ki);
     

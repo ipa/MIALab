@@ -1,6 +1,8 @@
 # Ignore large data
 data/*.mhd
 data/*.raw
+data/testData/*.mhd
+data/testData/*.raw
 !data/README.md
 
 # Ignore MATLAB backup files

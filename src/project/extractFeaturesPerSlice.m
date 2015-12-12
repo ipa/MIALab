@@ -63,7 +63,7 @@ for k=1:Kf
     if (features.Laplacian); imLaplacian(:,:,k)=imfilter(myImage(:,:,k),lp); end
 end
 
-disp('----building feature vector for samples...');
+% disp('----building feature vector for samples...');
 idx = 1;
 %k = median(1:Kf);
 if (features.Avg); X(:,idx) = imgAv(:); idx = idx + 1; end
