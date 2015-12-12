@@ -2,6 +2,8 @@ function [ Pm ] = postprocessPredictionVisual( Ps , Label, path )
 %POSTPROCESSPREDICTION Summary of this function goes here
 %   Detailed explanation goes here
 
+[~,~,~] = mkdir(path);
+
 voxelSize=[0.3906 0.3906 1];
 
 T = 0.5;
