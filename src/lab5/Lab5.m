@@ -46,11 +46,18 @@ meanShape_3D(:,1)=meanShape_3D(:,2);
 meanShape_3D(:,2)=temp;
 FV.vertices=meanShape_3D;
 
+
 %swap also row and columns for eigenVectors.
 eVecs3D=reshape(eVecs,dimSample/3,3,9); % 9=modes, hard coded
 temp=eVecs3D(:,1,:);
 eVecs3D(:,1,:)=eVecs3D(:,2,:);
 eVecs3D(:,2,:)=temp;
+eVecs=reshape(eVecs3D,dimSample,9);
+
+% HACK
+[FV, eVecs3D] = compactVerticesFaces(FV, eVecs3D);
+meanShape_3D = FV.vertices;
+dimSample = size(meanShape_3D,1)*3;
 eVecs=reshape(eVecs3D,dimSample,9);
 
 % go back to 1D vector for ASM labor
@@ -68,16 +75,16 @@ for i=1:dimSample/3
 end
 
 %% Read target image and compute edge map
-myImage=mha_read_volume(myImage_path);
-% myImage = mha_read_volume('../../data/image-017.mhd');
-myImageEdge=zeros(size(myImage));
-for j=1:size(myImage,3)
-    %smearing the detected edge
-    H = fspecial('gaussian',30,10);
-    %edge detection
-    edgecomp=edge(1-Ps(:,:,j),'canny', [], 3);%,[],3
-    myImageEdge(:,:,j) = exp(5*imfilter(double(edgecomp),H,'replicate'));
-end
+% myImage=mha_read_volume(myImage_path);
+myImage = mha_read_volume('../../data/image-017.mhd');
+% myImageEdge=zeros(size(myImage));
+% for j=1:size(myImage,3)
+%     %smearing the detected edge
+%     H = fspecial('gaussian',30,10);
+%     %edge detection
+%     edgecomp=edge(1-Ps(:,:,j),'canny', [], 3);%,[],3
+%     myImageEdge(:,:,j) = exp(5*imfilter(double(edgecomp),H,'replicate'));
+% end
 viewImage(myImageEdge, voxelSize);hold on;
 % myImageEdgeUnboosted = myImageEdge;
 
@@ -151,6 +158,7 @@ disp('Iterations done.');
 %% For testing. Compare against real shape (GT)
 
 FVSample=read_wobj('../lab4/DataSSMModel/R_Femur_17.obj');
+FVSample = compactVerticesFaces(FVSample);
 shapeGT=FVSample.vertices;
 fvSample.faces=FVSample.faces;
 
