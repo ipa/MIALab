@@ -16,7 +16,7 @@ dirlist_LabelImages = dir(path2LabelImages);
 nimages = length(images);
 %read input and label images
 %lenghty loop, adding a waitbar
-h = waitbar(0,'...Initializing parallel computing, please wait...');
+% h = waitbar(0,'...Initializing parallel computing, please wait...');
 idx = 1;
 for i = images 
     
@@ -34,12 +34,12 @@ for i = images
     %handler for processed images
     %subplot(floor(sqrt(nimages)),ceil(nimages/(floor(sqrt(nimages)))),i);viewImage(myImage,[1,1,1]); % to fix hard-coded voxelSize! 
 
-    waitbar(idx/nimages,h,strcat('Processing image',num2str(i)));
+%     waitbar(idx/nimages,h,strcat('Processing image',num2str(i)));
     idx = idx + 1;
 end
-disp('----fetching output');
+% disp('----fetching output');
 [X,Y]=fetchOutputs(F); 
-close(h);
+% close(h);
 %delete(gcp);
-disp('----done with feature extraction');
+% disp('----done with feature extraction');
 

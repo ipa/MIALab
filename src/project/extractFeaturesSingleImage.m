@@ -6,7 +6,7 @@ global edges;
 myImage=mha_read_volume(path2Image);
 % preprocess image
 
-disp('----preprocessing image');
+% disp('----preprocessing image');
 myImage=preProcess(myImage);
 %Read label image so we sample on "femur" tissues
 myImageLabel=mha_read_volume(path2LabelImage);
@@ -19,7 +19,7 @@ I=find(myImageLabel==1);
 I=find(myImageLabel~=1);
 [Ib,Jb,Kb]=ind2sub(size(myImage),I);
 
-disp('----selecting samples from image...');
+% disp('----selecting samples from image...');
 %take a proportion for both background and foreground samples and store per row
 nsamples = round(proportionSamples*size(If,1));
 samplesForeground = datasample([If,Jf,Kf],nsamples);
