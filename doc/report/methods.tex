@@ -1,1 +1,18 @@
-\section{Methods}
+% !TeX spellcheck = en-GB
+\section{Materials \& Methods}
+Wee seek for an automatic method to segment the distal femur on MR images of the knee. Therefore we use a Random Forest classifier, for which we have 20 MR images to train and test. The whole algorithm is shown in ... \\
+In order to compensate for different grey-scale ranges, the images are first normalized using Z-Score normalisation \autoref{eq:zscorenormalize}. In a second step a Wiener filter is applied to reduce the noise. 
+\begin{equation}
+I_n = \frac{I - \mu}{\sigma}
+\label{eq:zscorenormalize}
+\end{equation}
+\subsection{Feature Extraction}
+
+
+
+%fully automatic
+%show the pipeline
+%preprocessing (normlization, wiener filer), maybe show picture
+%training, features, relative position, show kernels, number of trees, 2d features
+%postprocessing, opening, largest area, filling, largest volume, show images as in presentation
+%explain our cross validation procedure (DICE not OOB score)
