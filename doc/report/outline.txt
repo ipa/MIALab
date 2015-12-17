@@ -1,0 +1,38 @@
+Generally like presentation...
+
+Abstract: 
+
+Introduction (Severin): 
+planning, chosing of femoral component in knee implant, therefore segmentation of femur in mri image of the knee
+mri because of less radiation
+state of the art
+goal: dice 0.95 std 0.05 <5 min computation time
+robustness more important then accuracy
+
+Methods (Iwan): 
+fully automatic
+show the pipeline
+preprocessing (normlization, wiener filer), maybe show picture
+training, features, relative position, show kernels, number of trees, 2d features
+postprocessing, opening, largest area, filling, largest volume, show images as in presentation
+explain our cross validation procedure (DICE not OOB score)
+
+Results (Iwan): 
+show boxplot
+best and worst case
+
+Discussion (Iwan): 
+why did the worst case happen?
+discuss the results (boxplots and score), is it robust enough?
+speed
+
+Conclusion (Severin):
+can it be used to solve the clinical problem?
+goal reached?
+
+Outlook:
+include prior information
+3d features
+more bone structures
+
+References:
