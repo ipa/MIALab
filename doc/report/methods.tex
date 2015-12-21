@@ -10,10 +10,19 @@ I_n = \frac{I - \mu}{\sigma}
 \subsection{Feature Extraction}
 We used 13 different features of which we had edge representations like Prewitt and Sobel, derivatives using the Laplacian and Laplacian of Gaussian and intensity information using Gaussian and Average filters. Additionally we added statistical information entropy and standard deviation. To restrict the classifier to the Femur, we added the relative position in 3D. The relative position is used instead of the absolute, to compensate for different image resolutions.
 \subsection{Training \& Predicting}
-The RF classifier is trained using 15 trees and 1\% of the voxels from the training images. 
+The RF classifier is trained using 15 trees and 1\% of the voxels from the training images, which are randomly picked. 
 \subsection{Post processing}
+After the prediction of the Random Forest classifier, the results are post processed to remove outliers. 
+\begin{enumerate}
+\item 2D Morphological opening
+\item 2D Keep largest area
+\item 2D Morphological filling
+\item 3D Keep largest volume
+\end{enumerate}
+
+The last step is to create a volume rendering, to present the result to the user. This volume rendering is performed using a marching cubes algorithm.
 \subsection{Validation}
-To validate the whole algorithm, a randomized 5 fold cross validation is used. Out of the twenty images 16 are used to train and 4 to test the algorithm. 
+To validate the whole algorithm, a randomized 5 fold cross validation is used. Out of the twenty images 16 are used to train and 4 to test the algorithm. To measure the accuracy and robustness the mean DICE coefficient and the standard deviation over all results is used.
 %fully automatic
 %show the pipeline
 %preprocessing (normlization, wiener filer), maybe show picture
