@@ -1,6 +1,6 @@
 % !TeX spellcheck = en-GB
 \section{Materials \& Methods}
-Wee seek for an automatic method to segment the distal femur on MR images of the knee. Therefore we use a Random Forest (RF) classifier, for which we have 20 MR images to train and test. The whole algorithm is shown in ...
+Wee seek for an automatic method to segment the distal femur on MR images of the knee. Therefore we use a Random Forest (RF) classifier, for which we have 20 MR images to train and test. The whole algorithm is shown in \autoref{fig:pipeline}.
 \subsection{Pre processing}
 In order to compensate for different grey-scale ranges, the images are first normalized using Z-Score normalisation \autoref{eq:zscorenormalize}. In a second step a Wiener filter is applied to reduce the noise. 
 \begin{equation}
@@ -9,7 +9,7 @@ I_n = \frac{I - \mu}{\sigma}
 \end{equation}
 \subsection{Feature Extraction}
 We used 13 different features of which we had edge representations like Prewitt and Sobel, derivatives using the Laplacian and Laplacian of Gaussian and intensity information using Gaussian and Average filters. Additionally we added statistical information entropy and standard deviation. To restrict the classifier to the Femur, we added the relative position in 3D. The relative position is used instead of the absolute, to compensate for different image resolutions.
-\subsection{Training \& Predicting}
+\subsection{Random Forest}
 The RF classifier is trained using 15 trees and 1\% of the voxels from the training images, which are randomly picked. 
 \subsection{Post processing}
 After the prediction of the Random Forest classifier, the results are post processed to remove outliers. 
