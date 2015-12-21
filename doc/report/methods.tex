@@ -23,6 +23,13 @@ After the prediction of the Random Forest classifier, the results are post proce
 The last step is to create a volume rendering, to present the result to the user. This volume rendering is performed using a marching cubes algorithm.
 \subsection{Validation}
 To validate the whole algorithm, a randomized 5 fold cross validation is used. Out of the twenty images 16 are used to train and 4 to test the algorithm. To measure the accuracy and robustness the mean DICE coefficient and the standard deviation over all results is used.
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{pipeline}
+\caption{Pipeline of the proposed algorithm}
+\label{fig:pipeline}
+\end{figure*}
+
 %fully automatic
 %show the pipeline
 %preprocessing (normlization, wiener filer), maybe show picture
