@@ -4,7 +4,7 @@ The automatic segmentation evolves around a Random Forest classifier. In \autore
 
 To train the RF and evaluate the performance of the segmentation two data sets are used. The first data set comprises twenty MRI volumes and their ground truth. This data set is used to train the RF and evaluate quantitative the segmentation. The second data set contains ten MRI volumes without ground truth, which are used to evaluate the segmentation qualitative.
 \subsection{Pre processing}
-In order to compensate for different MRI grey-scale representations, the images are normalized using z-score normalisation  \autoref{eq:zscorenormalize}. In a second step a Wiener filter is applied to reduce noise. This yields a normalized representation of the data, that is used for the next steps.
+In order to compensate for different MRI grey-scale representations, the images are normalized using z-score normalisation (\autoref{eq:zscorenormalize}). In a second step a Wiener filter is applied to reduce noise. This yields a normalized representation of the data, that is used for the next steps.
 \begin{equation}
 I_n = \frac{I - \mu}{\sigma}
 \label{eq:zscorenormalize}
@@ -25,7 +25,7 @@ After the prediction of the Random Forest classifier, the results are post proce
 \end{enumerate}
 Applying this four steps yields the final segmented volume. In order to present the result, the volume is converted to a mesh by applying a marching cubes algorithm. 
 \subsection{Validation}
-To validate the whole segmentation, a randomized five fold cross validation is used on the second data set. Out of the twenty volumes 16 are used to train and 4 to test the algorithm. To measure the accuracy and robustness the mean DICE coefficient and the standard deviation over all 20 results is used.
+To validate the whole segmentation, a randomized 5-fold cross validation \cite{cross} is used on the second data set. Out of the twenty volumes 16 are used to train and 4 to test the algorithm. To measure the accuracy and robustness the mean DICE coefficient and the standard deviation over all 20 results is used.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{pipeline}
