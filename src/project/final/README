@@ -1,0 +1,14 @@
+%% Medical Image Analysis Lab
+% Author: Iwan Paolucci, Severin Tobler
+% Group : The Tree Nurses
+
+The application needs the parallel toolbox active, because the prediction,
+runs slice per slice in a parallel for loop.
+
+The following settings have to be changed before running the application
+libPath: Path to the libraries we got from ILIAS (ReadData3d_version1k)
+imagePath: Path to the image folder
+imageFile: The .mhd file that has to be processed
+showMRSlice: If this setting is set to true, an MR slice is projected into the volume rendering
+
+Now the application can be run and no further user interaction is needed
