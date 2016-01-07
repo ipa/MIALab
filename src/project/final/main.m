@@ -7,7 +7,7 @@ clear; close all; clc;
 libPath     = '../../libs/ReadData3D_version1k/';
 imagePath   = '../../../data/testData/';
 imageFile   = 'image-029.mhd';
-showMRSlice = true;
+showMRSlice = false;
 
 %% Prepare
 load('treeModel.mat');
