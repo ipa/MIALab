@@ -1,13 +1,17 @@
-% should we use RF or Random Forest ?
-% maybe mention that the position is a powerfull feature, but also a restriction/big assumption
-% mention the 0.95 DICE target
+% should we use RF or Random Forest ? ==> yes
+% done, maybe mention that the position is a powerfull feature, but also a restriction/big assumptio
+% done, mention the 0.95 DICE target
 % autoref for subimages works different (no 'Figure')
-% we only mention the rebustness in discussion but not the accuracy (that has not fullfiled)
+% done, we only mention the rebustness in discussion but not the accuracy (that has not fullfiled)
 % mention that we tried a little bit with SSM and 3D features ?
 
 \documentclass[journal]{IEEEtran}
 
 \input{config.tex}
+
+% Bibliography
+\usepackage[backend=bibtex, style=ieee]{biblatex}
+\addbibresource{sources.bib}
 
 \title{Personalized Femoral Implant Planning by Automatic Femur Segmentation}
 \author{Iwan Paolucci, Severin Tobler\\The Tree Nurses}
@@ -26,6 +30,8 @@
 \input{discussion.tex}
 
 \input{conclusion.tex}
+
+\printbibliography
 
 \end{document}
 

@@ -10,7 +10,7 @@ I_n = \frac{I - \mu}{\sigma}
 \label{eq:zscorenormalize}
 \end{equation}
 \subsection{Feature Extraction \& Random Forest}
-Thirteen different features are extracted for each voxel of the normalized data, which are used to apply the RF. The features cover different aspects of the data. To describe vertical and horizontal edges we use Prewitt and Sobel. The derivatives are covered by Laplacian and Laplacian of Gaussian and the intensity by Gaussian and Average filters. The statistical information is represented by the entropy and the standard deviation features. To restrict the classifier to the femur we added the relative position in 3D, with the assumption that the femur rotates and moves only slightly between the different MRI volumes. To compensate for different image resolutions the relative position is used instead of the absolute.
+Thirteen different features are extracted for each voxel of the normalized data, which are used to apply the RF. The features cover different aspects of the data. To describe vertical and horizontal edges we use Prewitt and Sobel. The derivatives are covered by Laplacian and Laplacian of Gaussian and the intensity by Gaussian and Average filters. The statistical information is represented by the entropy and the standard deviation features. To restrict the classifier to the femur we added the relative position in 3D, with the strong assumption that the femur rotates and moves only slightly between the different MRI volumes. This assumption can be made, because the orientation of the patient in medical images is known according to the DICOM standard\cite{dicom-orientation}. To compensate for different image resolutions the relative position is used instead of the absolute.
 
 The RF tree model is created by training a RF with 15 trees on 1\% of the voxels from the training images, which are randomly picked. Applying the RF tree model on the extracted features yields the segmented femur.
 %We used 13 different features of which we had edge representations like Prewitt and Sobel, derivatives using the Laplacian and Laplacian of Gaussian and intensity information using Gaussian and Average filters. Additionally we added statistical information entropy and standard deviation. To restrict the classifier to the Femur, we added the relative position in 3D. The relative position is used instead of the absolute, to compensate for different image resolutions.
@@ -23,13 +23,13 @@ After the prediction of the Random Forest classifier, the results are post proce
 \item 2D Morphological filling
 \item 3D Keep largest volume
 \end{enumerate}
-Applying this four steps yields the final segmented volume. In order to present the result, the volume is converted to a mesh by applying a marching cubes algorithm. 
+Applying this four steps yields the final segmented volume. In order to present the result, the volume is converted to a mesh by applying a marching cubes algorithm \cite{lorensen}. 
 \subsection{Validation}
-To validate the whole segmentation, a randomized 5-fold cross validation \cite{cross} is used on the first data set. Out of the 20 volumes 16 are used to train and 4 to test the algorithm. To measure the accuracy and robustness the mean DICE coefficient and the standard deviation over all 20 results is used.
+To validate the whole segmentation, a randomized 5-fold cross validation \cite{cross} is used on the first data set. Out of the 20 volumes 16 are used to train and 4 to test the algorithm. To measure the accuracy and robustness the mean DICE coefficient\cite{powers2011evaluation} and the standard deviation over all 20 results is used.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{pipeline}
-\caption{Pipeline of the automatic segmentation using a trained Random Forest model to segment the femur from MRI data.}
+\caption{Pipeline of the automatic segmentation using a Random Forest model to segment the femur from MRI data, followed by postprocessing and visualization using marching cubes.}
 \label{fig:pipeline}
 \end{figure*}
 

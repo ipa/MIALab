@@ -16,4 +16,9 @@ model/*.tar.gz
 *.mat
 !src/project/finalModel.mat
 
+# Tex
+*-blx.bib
+*.bbl
+*.blg
+*.run.xml
 
