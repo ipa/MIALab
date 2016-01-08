@@ -1,11 +1,12 @@
 %% Medical Image Analysis Lab
 % Author: Iwan Paolucci, Severin Tobler
 % Group : The Tree Nurses
+% 8 January 2016
 
-The application needs the parallel toolbox active, because the prediction,
+The application needs the parallel toolbox active, since the prediction
 runs slice per slice in a parallel for loop.
 
-The following settings have to be changed before running the application
+The following settings have to be changed in main.m before running the application
 libPath: Path to the libraries we got from ILIAS (ReadData3d_version1k)
 imagePath: Path to the image folder
 imageFile: The .mhd file that has to be processed

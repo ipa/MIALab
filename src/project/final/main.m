@@ -1,6 +1,7 @@
 %% Medical Image Analysis Lab
 % Author: Iwan Paolucci, Severin Tobler
 % Group : The Tree Nurses
+% 8 January 2016
 clear; close all; clc;
 
 %% Settings
