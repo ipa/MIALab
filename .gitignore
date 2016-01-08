@@ -22,3 +22,5 @@ model/*.tar.gz
 *.blg
 *.run.xml
 
+# handin
+MIALab_IwanPaolucci_SeverinTobler/
