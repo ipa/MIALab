@@ -1,10 +1,10 @@
 % !TeX spellcheck = en-GB
 \section{Results}
-A 5-fold cross validation yields a mean DICE of $0.91$ with a standard deviation of $0.03$. The range lies between $0.85$ and $0.96$ and has a median of $0.9$. In \autoref{fig:dicecrossvalid} the DICE after RF is compared to the DICE after the post processing. One can see, that the post processing increases the results by $0.05$ on average. The average computation time for the whole proposed algorithm is $2.5$ minutes for one MRI volume. The goal of $0.95$ DICE is represented as the striped line in \autoref{fig:dicecrossvalid}.
+A 5-fold cross validation yields a mean DICE of $0.91$ with a standard deviation of $0.03$. The range lies between $0.85$ and $0.96$ and has a median of $0.9$. In \autoref{fig:dicecrossvalid} the DICE after the prediction of the Random Forest is compared to the DICE after the post processing. One can see, that the post processing increases the results by $0.05$ on average. The average computation time for the whole proposed algorithm is $2.5$ minutes for one MRI volume. The goal of $0.95$ DICE is represented as the dashed line in \autoref{fig:dicecrossvalid}.
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\linewidth]{dicecrossvalid2.pdf}
-\caption{DICE yielded by the 5-fold cross validation on the first data set. Once after Random Forest and once after post processing, the final segmentation.}
+\includegraphics[width=\linewidth]{dicecrossvalid2.pdf}
+\caption{The target DICE of $0.95$(dashed line) and the DICE yielded by the 5-fold cross validation on the first data set. The DICE is measured once after Random Forest and once after post processing.}
 \label{fig:dicecrossvalid}
 \end{figure}
 

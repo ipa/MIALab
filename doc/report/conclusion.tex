@@ -1,6 +1,6 @@
 % !TeX spellcheck = en-GB
 \section{Conclusion}
-We developed a fast and robust automatic segmentation algorithm. The loading of one MRI volume until the final segmentation requires in average $2.5$ minutes on a commercial laptop. With a DICE of $0.91$ and a standard deviation of $0.03$ the segmentation has a sufficient robustness, but lacks in accuracy, which will be part of the future development.
+We developed a fast and robust automatic segmentation algorithm. The loading of one MRI volume until the final segmentation requires in average $2.5$ minutes on a commercial laptop. With a DICE of $0.91$ and a standard deviation of $0.03$ the segmentation has a sufficient robustness, but lacks in accuracy, which will be part of future development.
 
 In order to enhance the accuracy, we propose to include prior information of the patient. One could create several Random Forest models for a specific group of people, where the groups differ in age, sex, weight or height. Prior information could also be considered by supporting the segmentation with a Statistic Shape Model \cite{heimann2009statistical}. However, the performance of the Statistic Shape Model depends strongly on its initialization and may therefore decrease the robustness of the segmentation.
 
