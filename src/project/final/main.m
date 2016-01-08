@@ -1,13 +1,12 @@
 %% Medical Image Analysis Lab
 % Author: Iwan Paolucci, Severin Tobler
 % Group : The Tree Nurses
-% 8 January 2016
+% Date  : 8 January 2016
 clear; close all; clc;
 
 %% Settings
 libPath     = '../../libs/ReadData3D_version1k/';
-imagePath   = '../../../data/testData/';
-imageFile   = 'image-029.mhd';
+imageFile   = '../../../data/testData/image-029.mhd';
 showMRSlice = false;
 
 %% Prepare
@@ -16,10 +15,10 @@ addpath(genpath(libPath));
 
 %% Load Image
 fprintf('Processing File %s\n', imageFile);
-path2image = [imagePath, imageFile];
-myImage = mha_read_volume(path2image);
+myImage = mha_read_volume(imageFile);
 
-info = mha_read_header(path2image);
+% read voxel size from .mhd header file
+info = mha_read_header(imageFile);
 voxelSize = info.PixelDimensions;
 
 %% Predict
