@@ -1,6 +1,3 @@
 == Preprocessing ==
 Using Slicer: Denoising using gaussian (sigma 0.5, 1) gives better and more efficient results than median.
 
-
-qsub -M ip09i045@students.unibe.ch -l h_cpu=00:00:01 -l h_vmem=1M  -cwd submit.sh
-
